@@ -1,0 +1,68 @@
+<!--<div class="container well">
+	<div class="row">
+		<div class="col-sm-4 text-center">
+			<a ui-sref="create_topic">
+				<button class="btn btn-primary btn-lg">
+					Create a Topic
+				</button>
+			</a>
+		</div>
+		<div class="col-sm-4 text-center">
+			<a ui-sref="edit_topics">
+				<button class="btn btn-success btn-lg">
+					View all Topics
+				</button>
+			</a>
+		</div>
+		<div class="col-sm-4 text-center">
+			<a ui-sref="edit_users">
+				<button class="btn btn-danger btn-lg">
+					View all Users
+				</button>
+			</a>
+		</div>
+	</div>
+</div>
+-->
+
+<div id="admin" class="container">
+	<div class="row">
+		<div class="col-sm-12 well text-center">
+			<h3>Admin Dashboard</h3>
+		</div>
+	</div>
+	<div>
+		<a ui-sref="create_topic" class="btn btn-success">
+			<strong>+ New Topic</strong>
+		</a>
+	<div>
+	<div style="margin-top: 50px; margin-bottom:50px" class="row">
+		<a ui-sref="edit_users">
+			<div class="col-sm-4">
+				<div id="usersBtn">
+					<i class="pull-left fa fa-users fa-3x"></i>
+					<h4 class="pull-right">{{ admin.userCount }} Users</h4>
+				</div>
+			</div>
+		</a>
+		<a ui-sref="edit_topics">
+			<div class="col-sm-4">
+				<div id="topicsBtn">
+					<i class="pull-left fa fa-list fa-3x"></i>
+					<h4 class="pull-right">{{ admin.topicCount }} Topics</h4>
+				</div>
+			</div>
+		</a>
+		<a ui-sref="#">
+			<div class="col-sm-4">
+				<div id="sessionsBtn">
+					<i class="pull-left fa fa-th fa-3x"></i>
+					<h4 class="pull-right">0 Study Sessions</h4>
+				</div>
+			</div>
+		</a>
+	</div>
+	<div ng-class="account.groupEditAlert" ng-if="group.groupEditMsg">
+		{{group.groupEditMsg}}
+	</div>
+</div>

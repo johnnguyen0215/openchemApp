@@ -1,0 +1,46 @@
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="row">
+				<div style="text-align:center" class="col-sm-12 well">
+					<h3>Account</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 well">
+					<div id="newMessage">
+						<a ui-sref="create_message" class="btn btn-primary">
+							<strong>+ New Message</strong>
+						</a>
+					<div>
+					<hr>
+					<h3> Inbox </h3>
+					<div class="text-center" ng-if="account.user.messages.length === 0">
+						<h4>Your inbox is currently empty.</h4>
+					</div>
+					<table class="table table-bordered table-striped" ng-if="account.user.messages.length > 0">
+						<thead>
+							<tr>
+								<th bgcolor="#ecf0f1" class="col-sm-2">Sent From</th>
+								<th bgcolor="#ecf0f1" class="col-sm-2">Subject</th>
+								<th bgcolor="#ecf0f1" class="col-sm-7">Message</th>
+								<th bgcolor="#ecf0f1" class="col-sm-1"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat= "message in account.user.messages">
+								<td>{{ message.sender_name }}</td>
+								<td>{{ message.message_subject }} </td>
+								<td compile="message.message_content"></td>
+								<td class="text-center">
+									<button ng-click="account.deleteMessage(message.id)" type="submit" class="btn btn-small"><i class="glyphicon glyphicon-trash"></i></button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>	
+
+</div>

@@ -1,0 +1,37 @@
+<div id="all-lectures">
+	<div class="well">
+		<h3 class="text-center"><strong>Edit Users Panel</strong></h3>
+	</div>
+
+
+	<div class="jumbotron text-center" ng-show="admin.processing">
+		<p>Loading users...</p>
+	</div>
+	<div class="well">
+		<div style="margin-top:20px">
+			<table class="myTable table table-hover table-bordered table-striped" ng-show="admin.users">
+				<thead>
+					<tr>
+						<th bgcolor="#ecf0f1">Name</th>
+						<th bgcolor="#ecf0f1">Username</th>
+						<th bgcolor="#ecf0f1">Email</th>
+						<th bgcolor="#ecf0f1">Admin</th>
+						<th bgcolor="#ecf0f1" class="span2"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="user in admin.users">
+						<td>{{ user.name }}</td>
+						<td>{{ user.username }}</td>
+						<td>{{ user.email }}</td>
+						<td>{{ user.admin }}</td>
+						<td class="span2">
+							<button ng-click="admin.editUser(user.id)" class="btn btn-primary">Edit</button>
+							<button ng-click="admin.deleteUser(user.id)" class="btn btn-danger">Delete</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

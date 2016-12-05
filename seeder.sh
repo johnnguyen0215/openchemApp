@@ -1,0 +1,11 @@
+php artisan db:seed;
+php artisan db:seed --class=Chem1ASeeder;
+php artisan db:seed --class=Chem1BSeeder;
+php artisan db:seed --class=Chem1CSeeder;
+php artisan db:seed --class=Chem5Seeder;
+php artisan db:seed --class=Chem51BSeeder;
+php artisan db:seed --class=Chem51CSeeder;
+php artisan db:seed --class=Chem107Seeder;
+php artisan db:seed --class=Chem128Seeder;
+php artisan db:seed --class=Chem131ASeeder;
+php artisan db:seed --class=Chem131BSeeder;

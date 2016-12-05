@@ -1,0 +1,41 @@
+<div id="create_message" class="container">
+	<div class="row">
+		<div style="text-align:center" class="col-sm-12 well">
+			<h3>Create Message</h3>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12 well">
+			<form ng-submit="account.addRecipient()">
+  			  <div class="form-group">
+			    <label>To:</label>
+			    <input type="text" style="width:200px" ng-model="account.recipientEmail" class="form-control" placeHolder="Recipient Email...">
+			  </div>
+			</form>
+		  	<label>Recipients:</label>
+			<ul style="list-style-type:none">
+				<li style="float:left" ng-repeat="recipient in account.message.recipients"><button style="margin-right:5px; margin-bottom:5px" ng-click="account.deleteRecipient(recipient)" class="btn btn-small btn-success tagBtn">{{ recipient }}</button>
+				</li>
+			</ul>
+			<form style="margin-top:50px;" ng-submit="account.sendMessage()">
+			  <div class="form-group">
+			    <label>Message Subject:</label>
+			    <input type="text" ng-model="account.message.subject" class="form-control">
+			  </div>
+			  <div class="form-group">
+			    <label>Message Body:</label>
+			    <textarea type="text" ng-model="account.message.message" class="form-control" rows="5"></textarea>
+			  </div>
+			  <div class="text-center">
+			  	<button type="submit" class="btn btn-primary">Send</button>
+			  </div>
+			</form>
+		</div>
+		<div ng-show="account.successMsg">
+			<div class="text-center" ng-class="account.alertmsg">
+				{{account.successMsg}}
+			</div>
+		</div>
+	</div>	
+</div>

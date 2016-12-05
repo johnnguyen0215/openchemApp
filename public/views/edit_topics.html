@@ -1,0 +1,41 @@
+
+<div id="all-lectures">
+	<div class="well">
+		<h3 class="text-center"><strong>Edit Topics List</strong></h3>
+	</div>
+
+
+	<div class="jumbotron text-center" ng-show="admin.processing">
+		<p>Loading Topics...</p>
+	</div>
+	<div style="height:800px, max-height:800px; overflow:auto;" class="well scrollable650px">
+		<div>
+			<a ui-sref="create_topic" class="btn btn-success">
+				<strong>+ New Topic</strong>
+			</a>
+		<div>
+		<div style="margin-top:20px">
+			<table class="myTable table table-hover table-bordered table-striped" ng-show="admin.topics">
+				<thead>
+					<tr>
+						<th bgcolor="#ecf0f1">Topic ID</th>
+						<th bgcolor="#ecf0f1">Topic Name</th>
+						<th bgcolor="#ecf0f1">Video URL</th>
+						<th bgcolor="#ecf0f1" class="span2"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="topic in admin.topics">
+						<td>{{ topic.id }}</td>
+						<td>{{ topic.topic_name }}</td>
+						<td><a href="{{ topic.video_url }}">{{ topic.video_url }}</td>
+						<td class="span2">
+							<a ui-sref="edit_topic({id: topic.id})" class="btn btn-primary">Edit</a>
+							<a href="#" ng-click="admin.deleteTopic(topic.id)" class="btn btn-danger">Delete</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

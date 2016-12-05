@@ -1,0 +1,194 @@
+<div>
+	<div class="row">
+		<div class="col-md-12 col-sm-12">
+			<div class="well text-center">
+				<h3> <strong> {{admin.type}} Topic </strong> </h3>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="well">
+				<div class="row">
+					<div class="col-md-6 col-sm-6">
+						<div class="row">
+							<div class="col-md-12 col-sm-6">
+								<h3 ng-class="admin.fieldColors['nameColor']">
+									Topic Name
+								</h3>
+								<form ng-submit="admin.inputTopicName()">
+									<input style="width:300px" ng-model="admin.topicData.topic_name" type="text" placeholder="Topic Name..." />
+								</form>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<h3 ng-class="admin.fieldColors['uploadVideoColor']">Upload Video</h3>
+								<img class="img-thumbnail" width="200px" ng-if="admin.topicData.video_id" height="150px" src="http://img.youtube.com/vi/{{admin.topicData.video_id}}/0.jpg">
+								<br/>
+								<a ng-if = "admin.topicData.video_url" href={{admin.topicData.video_url}}>{{admin.topicData.video_url}}</a>
+								<br/>
+								<form ng-submit="admin.inputVideoUrl()">
+									<input style="width:300px" ng-model="admin.videoUrlModel" type="text" placeholder="Video URL..." />
+									<button type="submit" class="btn btn-default btn-primary inputBtn">Submit</button>
+								</form>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<h3>Keywords:</h3>
+								<div style="clear:both" class="form-group pull-left">
+									<div ng-if="admin.type === 'Create'">
+										<ul style="list-style-type:none">
+											<li style="float:left" ng-repeat="keyword in admin.topicData.keywords"><button style="margin-right:5px; margin-bottom:5px" ng-click="admin.deleteKeyword(keyword)" class="btn btn-small btn-success tagBtn">{{ keyword }}</button>
+											</li>
+										</ul>
+									</div>
+									<div ng-if="admin.type === 'Edit'">
+										<ul style="list-style-type:none; clear:both">
+											<li style="float:left" ng-repeat="keyword in admin.topicData.keywords"><button style="margin-right:5px; margin-bottom:5px" ng-click="admin.deleteKeyword(keyword)" class="btn btn-small btn-success tagBtn">{{ keyword.word }}</button>
+											</li>
+											<li style="float:left" ng-repeat="keyword in admin.editTopicData.keywords"><button style="margin-right:5px; margin-bottom:5px" ng-click="admin.deleteEditTopicKeyword(keyword)" class="btn btn-small btn-success tagBtn">{{ keyword }}</button>
+											</li>
+										</ul>
+									</div>
+									<form class="pull-left" ng-submit="admin.inputKeyword()">
+										<input style="width:300px" ng-model="admin.keyword" type="text" placeholder="Keyword..." />
+									
+										<button type="submit" class="btn btn-default btn-primary inputBtn">Submit</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<h3>Chemtexts</h3>
+
+								<div style="padding-top:15px; padding-bottom: 20px" class ="dropdown">
+									<strong>Available files: </strong>
+									<button class="btn btn-default dropdown-toggle truncate" type="button" data-toggle="dropdown" aria-expanded="true">
+										{{ admin.chemtextFileName }}
+										<col-md- class="caret"></col-md->
+									</button>
+									<!--
+									<ul class="dropdown-menu dropdownList" aria-labelledby="fileDropdown">
+										<li ng-repeat="chemtextFile in admin.files track by $index">
+											<col-md- class="dropdownClickable" ng-click="admin.changeChemTextFile(chemtextFile)">{{chemtextFile}}</col-md->
+										</li>
+									</ul>
+									-->
+								</div>
+								<div ng-if="admin.topicData.chemtexts.length > 0 || admin.editTopicData.chemtexts.length > 0" style="clear:both" class="well well-small scrollable150px">
+									<ul style="clear:both">
+										<li class="urlButton truncate" ng-repeat="text in admin.topicData.chemtexts" ng-click="admin.deleteChemTextObj(text)">
+											<a style="color:white" target="_blank" href={{text.url}}>{{text.chemtext_name}}</a>
+										</li>
+										<li ng-if="admin.type === 'Edit'" class="urlButton truncate" ng-repeat="text in admin.editTopicData.chemtexts" ng-click="admin.deleteEditTopicChemTextObj(text)">
+											<a style="color:white" target="_blank" href={{text.url}}>{{text.chemtext_name}}</a>
+										</li>
+									</ul>
+								</div>
+								<div>
+									<form ng-submit="admin.inputChemTextObj()">
+										<input style="width:300px" ng-model="admin.chemtextObj.chemtext_name" type="text" placeHolder="Name of text..."/>
+										<input style="width:300px" ng-model="admin.chemtextObj.url" type="text" placeholder="Chem Text URL..." />
+										<button type="submit" class="btn btn-default btn-primary inputBtn">Submit</button>
+									</form>
+									<div style="clear:both" ng-show="admin.chemtextMsg">
+										<div class="alert alert-danger">
+											{{admin.chemtextMsg}}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="row">
+							<div class="col-md-12 col-sm-12">
+								<h3>Practice Problems</h3>
+								<div style="padding-top:15px; padding-bottom: 20px" class ="dropdown">
+									<strong>Available files: </strong>
+									<button class="btn btn-default dropdown-toggle truncate" type="button" data-toggle="dropdown" aria-expanded="true">
+										{{ admin.problemFileName }}
+										<col-md- class="caret"></col-md->
+									</button>
+									<!--
+									<ul class="dropdown-menu dropdownList" aria-labelledby="fileDropdown">
+										<li ng-repeat="problemFile in admin.files track by $index">
+											<col-md- class="dropdownClickable" ng-click="admin.changeProblemFile(fileName)">{{problemFile}}</col-md->
+										</li>
+									</ul>
+									-->
+								</div>
+								<div ng-if="admin.topicData.problems.length > 0" style="clear:both" class="well well-small scrollable150px">
+									<ul>
+										<li class="urlButton truncate" ng-repeat="problem in admin.topicData.problems track by $index" ng-click="admin.deleteProbObj(problem)">
+											<a style="color:white" target="_blank" href={{problem.url}}>{{ problem.problem_name }}</a>
+										</li>
+										<li ng-if="admin.type === 'Edit'" class="urlButton truncate" ng-repeat="problem in admin.editTopicData.problems" ng-click="admin.deleteEditTopicProbObj(problem)">
+											<a style="color:white" target="_blank" href={{text.url}}>{{problem.problem_name}}</a>
+										</li>
+									</ul>
+								</div>
+								<div>
+									<form ng-submit="admin.inputProbObj()">
+										<input style="width:300px" ng-model="admin.problemObj.problem_name" type="text" placeHolder="Name of problem..."/>
+										<input style="width:300px" ng-model="admin.problemObj.url" type="text" placeholder="Practice Problem URL..." />
+										<button type="submit" class="btn btn-default btn-primary inputBtn">Submit</button>
+									</form>
+									<div style="clear:both" ng-show="admin.problemsMsg">
+										<div class="alert alert-danger">
+											{{admin.problemsMsg}}
+										</div>
+									</div>
+								</div>
+							</div>	
+						</div>
+						<div class="row">
+							<div ng-if="admin.type == 'Create'" class="col-md-12">
+								<button type="button" ng-click="admin.uploadTopic()" class="btn btn-default btn-danger bigButton"><strong>Create Topic</strong></button>
+							</div>
+							<div ng-if="admin.type == 'Edit'" class="col-md-12">
+								<button type="button" ng-click="admin.updateTopic()" class="btn btn-default btn-danger bigButton">Update Topic</button>
+							</div>
+						</div>
+						<div ng-show="admin.message">
+							<div ng-class="admin.alertmsg">
+								{{ admin.message }}
+							</div>
+						</div>		
+					</div>
+					<div class="col-md-6 col-sm-6">
+						<h3 ng-class="admin.fieldColors['videoDescColor']">Video Description</h3>
+						<textarea rows="10" ng-model="admin.topicData.video_description" class="form-control"></textarea>
+						</br>
+						</br>
+						<a ui-sref="edit_topics"><button type="button" class="btn btn-large btn-success"><strong>Edit Topics</strong></button></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--
+	<div class="row">
+		<div class="col-md-12 col-sm-12">
+			<div class="well">
+				<div class="row container">
+					<div class="col-md-12 col-sm-12 text-center">
+						<h3> Upload a File </h3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-sm-12">
+						<h4>File Upload</h4>
+						<form id = "uploadForm" action="/api/upload" method="post" enctype="multipart/form-data">
+							<input type="file" name="uploadPdf">
+							<button class="btn btn-default btn-primary" type="submit", name="submit" value='upload file'>Upload File</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>-->
+</div>

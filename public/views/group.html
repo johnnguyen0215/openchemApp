@@ -1,0 +1,252 @@
+<div id="group" class="container">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="row">
+				<div class=" well sharp">
+					<h3 style="text-align:center">Group Panel</h3>
+				</div>
+			</div>
+			<div ng-if="group.user.leader == 1" class="row well sharp">
+				<h3>Add Group</h3>
+				<hr>
+				<div class="col-sm-4">
+					<form ng-submit="group.addGroup()">
+						<h4>Group Name</h4>
+						<input type="text" ng-model="group.groupObj.group_name" placeHolder="Group Name...">
+						<button type="submit" class="btn sharp btn-sm btn-primary"><strong>SUBMIT</strong></button>
+					</form>
+					<div style="margin-top:20px" class="col-sm-4" ng-if="group.addGroupMsg" ng-class="group.addGroupAlert"> {{group.addGroupMsg}}
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<h4>Group Topic Preferences</h4>
+					<ul id="preferenceList">
+						<li class="preferenceChoice" ng-repeat="preference in group.preferences">
+							<div ng-click="group.addGroupPreference(preference)">{{ preference }}</div>					
+						</li>
+					</ul>
+				</div>
+				<div class="col-sm-3">
+					<h4 ng-if="group.groupPreferences.length > 0">Group Preferences</h4>
+					<ul id="userPreferenceList">
+						<li class="userPreference" ng-repeat="groupPreference in group.groupPreferences">
+							<button ng-click="group.deleteGroupPreference(groupPreference)" class="btn sharp btn-sm btn-success">{{groupPreference}}</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div ng-if="group.user.leader == 1" class="row well sharp">
+				<div class="col-sm-12">
+					<h3> Edit Groups </h3>
+					<hr>
+					<div ng-if="group.processing">Processing...</div>
+					<table ng-if="!group.processing" class="myTable table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th bgcolor="#ecf0f1">Group Name</th>
+								<th bgcolor="#ecf0f1">Group Members</th>
+								<th bgcolor="#ecf0f1" class="col-sm-2"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="userGroup in group.user.groups">
+								<td><input type="text" ng-model="userGroup.group_name"/></td>
+								<td>
+									<div class="scrollable150px">
+										<ol>
+											<li class="memberClickable" ng-repeat="member in userGroup.users">
+												{{ member.name }}
+												<button class="btn sharp btn-xs btn-danger pull-right" ng-click="group.removeMember(userGroup, member.id)"><strong>REMOVE</strong></button>
+
+											</li>
+										</ol>
+									</div>
+								</td>
+								<td class="col-sm-2">
+									<a href="#" ng-click="group.updateGroup(userGroup)" class="btn sharp btn-sm btn-primary"><strong>UPDATE</strong></a>
+									<a href="#" ng-click="group.deleteGroup(userGroup.id)" class="btn sharp btn-sm btn-danger"><strong>DELETE</strong></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div ng-class="group.groupEditAlert" ng-if="group.groupEditMsg">
+						{{group.groupEditMsg}}
+					</div>
+				</div>
+			</div>
+
+			<div class="row well sharp">
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-12">
+							<h3> Your Groups </h3>
+							<hr>
+							<div style="padding-top:15px" class ="dropdown">
+								<button id="groupsDropdown" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+									{{ group.currentGroup.group_name }}
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="groupsDropdown">
+									<li ng-repeat="grp in group.user.groups">
+										<a href="#" ng-click="group.currentGroup = grp">
+											{{ grp.group_name }}
+										</a>
+									</li>
+								</ul>
+							</div>
+							<ul>
+								<li ng-repeat = "member in group.groupObj.group.members">
+									<span ng-click="group.removeMember(member.username)"> {{ member.username }}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div ng-if="group.user.leader" class="row">
+						<div class="col-sm-6">
+							<form ng-submit ="group.inviteMember()">
+								<h4>Invite Group Members</h4>
+								<input type="text" ng-model="group.memberEmail" placeHolder="Member Email...">
+								<button type="submit" class="btn sharp btn-sm btn-primary"><strong>SUBMIT</strong></button>
+							</form>
+							<div style="margin-top:20px" ng-class="group.groupInviteAlert" ng-if="group.groupInviteMsg">
+								{{group.groupInviteMsg}}
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<h4> Invites Sent</h4>
+							<table class="myTable table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th bgcolor="#ecf0f1">Sent To</th>
+										<th bgcolor="#ecf0f1">Group</th>
+										<th bgcolor="#ecf0f1" class="col-sm-2"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="member in group.user.invitedMembers">
+										<td>{{ member.name }}</td>
+										<td>{{ member.group_name }}</td>
+										<td class="col-sm-2">
+											<button ng-click="group.recallGroupInvite(member.invite_id)" class="btn sharp btn-sm btn-danger"><strong>RECALL</strong></button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div ng-if="group.currentGroup" class="row">
+						<div class="col-sm-6">
+							<h3> Group Members: </h3>
+							<div class="well sharp well sharp-small">
+								<ul>
+									<li ng-repeat="user in group.currentGroup.users">
+										{{user.name}}
+										<span ng-if="user.leader == 1"> [Peer Leader] </span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div ng-if="group.user.invites.length > 0" class="row well sharp">
+				<div class="col-sm-12">
+					<h3> Group Invites </h3>
+					<hr>
+					<table class="myTable table table-bordered table-striped" ng-if="group.user.invites.length > 0">
+						<thead>
+							<tr>
+								<th bgcolor="#ecf0f1">Sent From</th>
+								<th bgcolor="#ecf0f1">Group Name</th>
+								<th bgcolor="#ecf0f1" class="col-sm-2"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="invite in group.user.invites">
+								<td>{{ invite.name }}</td>
+								<td>{{ invite.group_name }}</td>
+								<td class="col-sm-2">
+									<button ng-click= "group.acceptInvite(invite)" class="btn sharp btn-primary">Accept</button>
+									<button ng-click="group.declineInvite(invite)" class="btn sharp btn-danger">Decline</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div ng-if="group.user.leader == 1" class="row well sharp">
+				<div class="col-sm-12">
+					<div class="row">
+						<div class="col-sm-5">
+							<h3> Create Study Session </h3>
+							<hr>
+							<label>Choose a group to invite: </label>
+							<div id="ssDropdown" class="dropdown">
+								<button id="studyGroupsDropdown" class="btn sharp btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+									{{ group.studyGroup.group_name }}
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="studyGroupDropdown">
+									<li ng-repeat="studyGroup in group.user.groups">
+										<a href="#" ng-click="group.studyGroup = studyGroup">
+											{{ studyGroup.group_name }}
+										</a>
+									</li>
+								</ul>
+							</div>
+
+							<form>
+							<!--
+								<div id="sessionNameInput" >
+									<input ng-model="group.sessionObj.meeting_name" size="40" type="text" placeHolder=" Input the name of the Study Session..."/>
+									<button ng-click="group.inputSessionName()" type="submit" class="btn btn-sm btn-primary">Submit</button>
+								</div>
+							
+								<div id="scribblarUrlInput">
+									<input ng-model="group.messageObj.message" size="40" type="text" placeHolder="Input Scribblar Url Here..." />
+									<button ng-click="group.inputSessionUrl()" type="submit" class="btn btn-sm btn-primary">Invite Group</button>
+								</div>
+							-->
+								<button style="margin-top:10px; margin-bottom:10px;" ng-click="group.createRoom()" type="submit" class="btn sharp btn-primary"><strong>CREATE ROOM</strong></button>
+							</form>
+							<div ng-if="group.groupSessionMsg" ng-class="group.groupSessionAlert">{{group.groupSessionMsg}}</div>
+						</div>
+						<!--
+						<div class="col-sm-6">
+							<h3>Open Study Sessions </h3>
+							<table class="table table-bordered table-striped" ng-if="group.user.sessions.length > 0">
+								<thead>
+									<tr>
+										<th bgcolor="#ecf0f1">Session Name</th>
+										<th bgcolor="#ecf0f1" class="col-sm-2"></th>
+										<th bgcolor="#ecf0f1" class="col-sm-2"></th>
+										<th bgcolor="#ecf0f1" class="col-sm-2"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="session in group.user.sessions">
+										<td>{{ session.meeting_name }}</td>
+										<td class="col-sm-2">
+											<button ng-click="group.joinSession(session.id)" class="btn btn-primary">Join Session</button>
+										</td>
+										<td class="col-sm-2">
+											<button ng-click= "group.inviteGroup(session.id)" class="btn btn-success">Invite Group</button>
+										</td>
+										<td class="col-sm-2">
+											<button ng-click= "group.closeSession(session.id)" class="btn btn-danger">Close Session</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div ng-if="group.inviteGroupMsg" class="alert alert-success">
+								{{ group.inviteGroupMsg }}
+							</div>
+						</div>
+						-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

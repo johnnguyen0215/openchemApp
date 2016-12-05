@@ -1,0 +1,176 @@
+<div id="home">
+<!-- tab navigation bar to fit search and scribblar
+-->
+	<ul class="nav nav-tabs">
+		<li ng-class="{active: main.selectedTab == 1}"><a href="#" ng-click="main.changeTabs(1)">Search Videos</a></li>
+		<li ng-class="{active: main.selectedTab == 2}"><a href="#" ng-click="main.changeTabs(2)">Study Session</a></li>
+	</ul>
+
+	<div ng-show="main.selectedTab == 1">
+		<div class="row" id="searchArea">
+			<div class="col-sm-4 col-sm-offset-1">
+				<h2 style="font-family:Helvetica"><strong>Search</strong></h2>
+				<p>for videos and other resources</p>
+				<form id="searchForm" ng-submit="main.search()" role="search">
+					<div class="input-group">
+						<input ng-model="main.searchQuery" type="text" class="form-control" name="srch-term" id="srch-term">
+						<div class="input-group-btn pull-left">
+							<button style="background-color:#0064a4" class="btn btn-default" type="submit"><i style="color:#ffd200"; class="glyphicon glyphicon-search"></i></button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="row">
+					<div class="col-sm-12 margin10">
+						<h3 class="text-center"><strong>{{ main.currentTopicName }}</strong></h3>
+						<div class="flex-video widescreen">
+							<iframe width="560" height="315" src="{{ main.embedUrl }}" frameborder="0" allowfullscreen></iframe>
+						</div>
+					</div>
+				</div>
+				<div ng-if="main.topic" class="row">
+					<div class="col-sm-12">
+						<div id="videoDescription" class="scrollable200px underlay">
+							{{ main.topic.video_description }}
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-6">
+				<div id="results" class="underlay">
+					<h3><strong>Results:</strong></h3>
+					<div ng-if="!main.processing">
+						<div ng-if="main.searchMessage">
+							{{main.searchMessage}}
+						</div>
+						<ul ng-if="main.topicData" class="topicsList scrollable650px">
+							<li ng-repeat="topic in main.topicData">
+								<div class="row clickable" ng-click="main.loadTopic(topic.id)">
+									<img style="width:auto; height:auto; max-width:150px; max-height:150px;" class="col-sm-6 img-polaroid" src="http://img.youtube.com/vi/{{topic.video_id}}/0.jpg">
+									<span class="col-sm-6">{{ topic.topic_name }}</span>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div ng-if="main.processing">
+						<span class="spinner">
+							<span class="glyphicon glyphicon-repeat">
+							</span>
+						</span>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<div ng-if="main.topic" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingOne">
+							<div role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								<h4><strong>Chem Text</strong></h4>
+							</div>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+							<div class="panel-body">
+								<div class="margin10">
+									<div ng-if="!main.currentChemTextName">
+										Sorry, there are currently no readings for this topic.
+										If you would like to suggest any resources for this topic please submit a request using the following <a style="color:#1abc9c" href="#">form</a>
+									</div>
+									<div ng-if="main.currentChemTextName" id="chemtextDropdown" style="padding-top:15px; padding-bottom:15px" class="dropdown pull-right">
+										<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+											{{ main.currentChemTextName}}
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu dropdownList" aria-labelledby="chemTextDropdown">
+											<li ng-repeat="chemText in main.topic.chemtexts">
+												<span class="dropdownClickable" ng-click="main.changeChemText(chemText)">{{chemText.chemtext_name}}</span>
+											</li>
+										</ul>
+									</div>
+									<div ng-if="main.currentChemTextUrl" style="clear:both">
+										<iframe height="1000px" width="100%" src="{{main.currentChemTextUrl}}"></iframe>	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingTwo">
+							<div class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+								<h4><strong>Problems</strong></h4>
+							</div>
+						</div>
+						<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+							<div class="panel-body">
+								<div class="margin10">
+									<div ng-if="!main.currentProblemName">
+										Sorry, there are currently no problems for this topic.
+										If you would like to suggest any resources for this topic please submit a request using the following <a style="color:#1abc9c" href="#">form</a>
+									</div>					
+									<div ng-if="main.currentProblemName" id="problemsDropdown" style="padding-top:15px; padding-bottom:15px" class ="dropdown pull-right">
+										<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+											{{ main.currentProblemName }}
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu dropdownList" aria-labelledby="problemDropdown">
+											<li ng-repeat="problem in main.topic.problems">
+												<span class="dropdownClickable" ng-click="main.changeProblem(problem)">{{problem.problem_name}}</span>
+											</li>
+										</ul>
+									</div>
+									<div ng-if="main.currentProblemUrl" style="clear:both">
+										<iframe height="1000px" width="100%" src="{{main.currentProblemUrl}}"></iframe>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading" role="tab" id="headingThree">
+							<div class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+								<h4><strong>Solutions</strong></h4>
+							</div>
+						</div>
+						<div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+							<div class="panel-body">
+								<div class="margin10">
+									<div ng-if="!main.currentSolutionName">
+										Sorry, there are currently no solutions for this topic.
+										If you would like to suggest any resources for this topic please submit a request using the following <a style="color:#1abc9c" href="#">form</a>
+									</div>
+									<div ng-if="main.currentSolutionName" id="solutionsDropdown" style="padding-top:15px; padding-bottom:15px" class ="dropdown pull-right">
+										<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+											{{ main.currentSolutionName }}
+											<span class="caret"></span>
+										</button>
+										<ul class="dropdown-menu dropdownList" aria-labelledby="solutionDropdown">
+											<li ng-repeat="solution in main.topic.solutions">
+												<span class="dropdownClickable" ng-click="main.changeSolution(solution)">{{solution.solution_name}}</span>
+											</li>
+										</ul>
+									</div>
+									<div ng-if="main.currentSolutionUrl" style="clear:both">
+										<iframe height="1000px" width="100%" src="{{main.currentSolutionUrl}}"></iframe>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div ng-class="main.scribblarView">
+		<iframe id="scribblar" src="http://scribblar.com/vys0zrs4"></iframe>
+	</div>
+</div>
